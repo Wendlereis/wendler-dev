@@ -4,7 +4,22 @@ require(`dotenv`).config({
 
 module.exports = {
   siteMetadata: {
-    siteTitleAlt: `Minimal Blog - Gatsby Theme`,
+    siteTitle: `wendler.dev`,
+    siteUrl: `https://wendler.dev`,
+    siteDescription: `Just a developer's thoughts about how life works`,
+    siteLanguage: `en`,
+    author: `@wendlereis`,
+    externalLinks: [
+      {
+        name: `Github`,
+        url: `https://github.com/Wendlereis`
+      },
+      {
+        name: `LinkedIn`,
+        url: `https://www.linkedin.com/in/wendlereis/`
+      },
+    ],
+    siteTitleAlt: `wendler-dev`,
     navigation: [
       {
         title: `Blog`,
@@ -31,9 +46,9 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `minimal-blog - @lekoarts/gatsby-theme-minimal-blog`,
-        short_name: `minimal-blog`,
-        description: `Typography driven, feature-rich blogging theme with minimal aesthetics. Includes tags/categories support and extensive features for code blocks such as live preview, line numbers, and code highlighting.`,
+        name: `wendler.dev - a developer's thoughts about how life works`,
+        short_name: `wendler.dev`,
+        description: `Just a developer's thoughts about how life works`,
         start_url: `/`,
         background_color: `#fff`,
         theme_color: `#6B46C1`,
