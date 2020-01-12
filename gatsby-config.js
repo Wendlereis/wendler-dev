@@ -22,12 +22,12 @@ module.exports = {
     siteTitleAlt: `wendler-dev`,
     navigation: [
       {
-        title: `Blog`,
-        slug: `/blog`,
+        title: `Me`,
+        slug: `/me`,
       },
       {
-        title: `About`,
-        slug: `/about`,
+        title: `Blog`,
+        slug: `/blog`,
       },
     ],
   },
