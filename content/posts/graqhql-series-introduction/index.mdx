@@ -1,0 +1,63 @@
+---
+title: GraphQL Series | Introdução
+date: 2021-05-02
+description: Início da serie sobre GraphQL
+tags:
+  - graphql
+  - frontend
+  - apis
+---
+
+# GraphQL Series | Introdução
+
+Hoje vamos iniciar os estudos sobre GraphQL! Nessa série, vou te apresentar os meus passos e aprendizados no assunto GraphQL.
+
+Nessa série, vou usar algumas fontes bacanas como o [How To GraphQL](https://www.howtographql.com/), livros da O'Reilly e onde mais puder nos ajudar.
+
+## Fundamentos
+
+Para começar, nada melhor que entender os Fundamentos de um determinado assunto. 
+
+### O que é
+GraphQL é um novo padrão de API's que fornece uma alternativa mais autônoma e declarativa em comparação ao REST. 
+
+Foi criado pelo Facebook e hoje é mantido pela comunidade. Sua característica declarativa permite que o cliente diga quais são exatamente os dados que ele precisa.
+
+Ao invés de vários endpoints, o GraphQL expõe apenas um, onde o cliente pode dizer de forma declarativa quais os dados que ele precisa.
+
+### Um pouco sobre REST
+
+Aplicações modernas têm a necessidade de solicitar dados de um banco de dados que é acessível através da internet, para isso temos o servidor.
+Quando um cliente precisa de uma informação, ele faz uma requisição ao servidor que é programado para responder corretamente com dados armazenados no banco de dados.
+
+REST tem sido um padrão bem famoso para expor dados do servidor. Quando este padrão foi criado, as aplicações eram relativamente simples e se enquadrava para muitos casos.
+Porém, o cenário de APIs tem mudado rapidamente durante os anos. Podemos pontuar três grandes fatores:
+
+- **Popularização do uso de dispositivos móveis:** 
+O aumento do uso de aparelhos com menor poder de processamento, e baixa qualidade de rede foram os motivos que fizeram o Facebook criar o Graphql. 
+O GraphQL minimiza a quantidade de dados transferidos pela rede melhorando as aplicações executadas dentro dessas condições
+
+- **Diferentes frameworks para frontend e plataformas:**
+Em um ambiente onde temos diversos frameworks de frontend e plataformas, criar uma API que atenda todas elas se torna um desafio. O GraphQL permite que cada cliente decida quais dados ele necessita, baseado em uma _query language_.
+
+- **Desenvolvimento veloz:**
+Deploy contínuo tem se tornado um padrão para as empresas. Com o padrão REST, a forma com que o dado é exposto ocasionalmente necessita ser revisitado por conta de uma nova regra de negócio ou alteração na interface. Com GraphQL o cliente solicita apenas oque ele realmente precisa.
+
+### Um contexto histórico
+
+O Facebook começou a usar GraphQL em 2012, nos seus aplicativos nativos e logo passou a ser usado no contexto de tecnologias web.
+
+O assunto foi falado publicamente durante a React Conf 2015 e logo foi anunciado os planos para se tornar uma tecnologia _open-source_. 
+Pelo fato do Facebook comentar sobre GraphQL no ambiente React, demorou um tempo para outros tipos de profissionais se interessarem no assunto.
+Na verdade, é uma tecnologia que pode ser usada em qualquer cliente que se comunique com uma API.
+
+Curiosamente, outras empresas como [Netflix](https://medium.com/netflix-techblog) e [Coursera](https://building.coursera.org/) trabalharam em ideias semelhantes. 
+Hoje em dia GraphQL é utilizado em produção por diversas empresas como: GitHub, Twitter, Yelp e Shopify.
+
+> Este blog também utiliza GraphQL graças ao [Gatsby](https://www.gatsbyjs.com/docs/graphql/)!
+
+### Para fechar
+
+GraphQL é um padrão de comunicação entre cliente e servidor com alguns benefícios como autonomia para o cliente, otimização para dispositivos móveis e uma grande comunidade.
+
+*Let's keep coding!*
