@@ -1,0 +1,75 @@
+---
+title: GraphQL Series | Porquê GraphQl?
+date: 2021-05-02
+description: Segundo post da série sobre GraphQL. Hoje vamos ver o porquê usar GraphQL como alternativa ao REST.
+tags:
+  - graphql
+  - frontend
+  - apis
+---
+
+# GraphQL Series | Porquê Graphql?
+
+Nos últimos tempos, REST tem sido um padrão para criação de APIs. 
+Isso se deve ao fato de grandes pontos como servidores _stateless_ e recursos com acessos estruturados. 
+Porém com o passar do tempo e o crescimento da complexidade e agilidade das aplicações modernas, este padrão se mostrou um tanto inflexível quanto às rápidas mudanças de requisitos dos clientes que fazem seu uso.
+
+O GraphQL foi criado com foco em flexibilidade e eficiência. Essa tecnologia resolve muitos dos desafios que os desenvolvedores passam ao usar APIs em REST.
+
+Para dar mais visibilidade a alguns de seus benefícios, vamos criar o seguinte cenário. 
+Imagine que você é responsável por desenvolver um blog. 
+Em sua tarefa atual você irá criar uma pagina com o nome de um usuário, seus posts e seus últimos 3 seguidores.
+
+Como seria a solução utilizando uma API REST e uma API GraphQL?
+
+## Recuperando dados com REST
+
+Para criar o contexto desta página usando REST, você teria que usar múltiplas rotas, como por exemplo `/user/:id` para buscar informações de um usuário específico, `/user/:id/posts` para buscar seus posts e por fim, `/users/:id/followers` para listar outros usuários que o segue.
+
+![blog request in rest](./blog-rest.png)
+
+Na imagem acima podemos notar a utilização de cada uma dessas rotas e os dados que ela nos devolve. 
+
+Vamos analisar um pouco esses dados. Quando chamamos a rota `/user/:id`, a nossa intenção era usar apenas o nome do nosso usuário, porém recuperamos outros dados como o endereço e data de aniversário. 
+
+## Recuperando dados com GraphQL
+
+Agora vamos cuidar do mesmo cenário, porém dessa vez utilizando GraphQL. 
+Neste formato precisamos apenas escrever uma _query_ que informa ao servidor quais são os dados necessários para aquela página, e o servidor responde um JSON preenchendo os critérios solicitados.
+
+![blog request in graphql](./blog-graphql.png)
+
+> Não se preocupe em entender a estrutura da query do agora, vamos falar dela nos próximos artigos.
+
+## Benefícios da abordagem com GraphQL
+
+O GraphQL resolve alguns dos problemas mais comuns do REST é o caso de _overfetching_ e _underfetching_. 
+Isso acontece pois o cliente consome rotas que retornam estruturas de dados fixas, criando uma dificuldade para desenhar API capazes de fornecer os dados que o cliente precisa.
+
+### Overfetching
+
+Overfetching significa baixar mais informações do que é necessário. Como em nosso exemplo, a rota `/user/:id` nos devolvia alguns dados a mais que não precisávamos como o endereço e data de nascimento.
+
+### Underfetching
+
+Outro problema comum é o underfetching, isso significa que uma rota não fornece todos os dados necessários, então o cliente terá que fazer outras requisições para compor a informação necessária. 
+
+### Rápidas iterações de produto
+
+Um padrão comum no REST é criar rotas que possam atender uma determinada tela da sua aplicação. 
+A maior fraqueza dessa abordagem é a necessidade de adaptação cada vez que um novo requisito é adicionado ao frontend, já que prever se vamos precisar de mais ou menos dados.
+Isso tira produtividade e torna o processo de desenvolvimento mais custoso.
+
+Com GraphQL esse problema é resolvido graças a sua flexibilidade. As mudanças do cliente podem ser feitas sem nenhum esforço adicional no servidor.
+
+### Schema e sistema de tipos
+
+O GraphQL utiliza um sistema fortemente tipado que define a capacidade da API. Seus tipos são expostos em um _schema_ utilizando a liguagem _GraphQL Schema Definition Language_.
+O schema serve como um contrato entre o cliente e o servidor para especificar como o cliente pode ter acesso aos dados.
+
+## Conclusão
+
+Vimos que aplicações modernas tem crescido cada vez mais, e o padrão REST apesar de ter contribuído com esse crescimento, pode não atender algumas situações, é aí que o GraphQL entra.
+Ele nos traz mais flexibilidade e autonomia dado a sua especificação baseado em schema, também evita problemas de excesso ou falta de dados que rotas estáticas proporcionam e uma interface declarativa.
+
+*Let's keep coding!*
