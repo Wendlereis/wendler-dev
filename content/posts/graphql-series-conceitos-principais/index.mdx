@@ -1,0 +1,130 @@
+---
+title: GraphQL Series | Conceitos principais
+date: 2021-05-12
+description: Terceiro post da série sobre GraphQL. Hoje vamos ver os principais conceitos do GraphQL.
+tags:
+  - graphql
+  - frontend
+  - apis
+---
+
+# GraphQL Series | Conceitos principais
+
+Hoje vamos descobrir alguns conceitos principais do GraphQL como sua definição de _schema_, tipos, queries e mutações.
+
+## Schema Definition Language
+
+Como comentamos no [post anterior](/graph-ql-series-porque-graph-ql), o GraphQL utiliza seu proprio sistema de tipo chamado _Schema Definition Language_ (SDL)
+
+É assim que ele se parece:
+
+```gql noLineNumbers
+type Pessoa {
+  nome: String!
+  idade: Int!
+}
+```
+
+No _schema_ acima, estamos especificando um tipo chamado `Pessoa`. 
+Esse novo tipo tem duas propriedades, `nome` e `idade`, seus tipos são `String` e `Int` respectivamente, como em liguagens de programação convencionais.
+O nosso tipo `Pessoa` tem um caractere especial `!`, isso indica que a propriedade é obrigatória para aquela determinada tipagem.
+
+### Relações
+
+Utilizando a SDL, também é possivel descrever relações entre tipos. 
+Por exempo, podemos criar um novo tipo chamado `Publicação` e atribuir ao nosso tipo `Pessoa`
+
+```gql noLineNumbers
+type Post {
+  titulo: String!
+  autor: Pessoa!
+}
+
+type Pessoa {
+  nome: String!
+  idade: Int!
+  publicacoes: [Post!]!
+}
+```
+
+Dessa forma criamos um relação de um para muitos, onde temos uma pessoa com muitas publicações. Note também um novo tipo primitivo, o array.
+
+## Buscando dados com Queries
+
+Diferente do padrão REST, que usamos várias rotas com uma estrutura de dados fixos, no GraphQL precisamos apenas de uma unica rota.
+Isso é possivel pois os dados nao sao fixos, mas sim flexiveis de acordo com oque o cliente solicita.
+
+Isso significa que o cliente explica exatamente oque ele quer, isso se chama _query_. E é assim que ela se parece:
+
+```gql noLineNumbers
+{
+  listarPessoas {
+    nome
+  } 
+}
+```
+
+O campor `listarPessoas` é chamado de campo raiz da nossa query, e tudo o que vem em seguida é o nosso _payload_. 
+Neste caso estamos pedindo o nome de todas as pessoas da nossa base de dados. E este é o resultado.
+
+```gql noLineNumbers
+{
+  "listarPessoas": [
+    { "nome": "Johnny" },
+    { "nome": "Sarah" },
+    { "nome": "Alice" },
+  ]
+}
+```
+
+O resultado está no formato _JSON_ exatamente da forma que especificamos em nossa _query_. 
+Um array de nome das pessoas cadastradas em nossa base de dados.
+
+### Lidando com argumentos
+
+Assim como no padrão REST, também conseguimos lidar com argumentos em nossas queries. 
+Podemos adicionar o arumento `idadeMinima` ao nosso tipo `Pessoa`, para retornar pessoas que tenham idade igual ou maior que nosso argumento, por exemplo:
+
+```gql noLineNumbers
+// requisição
+
+{
+  listarPessoas(idadeMinima: 18) {
+    nome
+  } 
+}
+
+// resposta
+
+{
+  "listarPessoas": [
+    { "nome": "Sarah" },
+  ]
+}
+```
+
+### Criando novos dados com Mutations
+
+Agora que sabemos como buscar informações do nosso servidor usando GraphQL, vamos descobrir como adicionar uma nova informação.
+
+Operações de criação, atualização e deleção de dados é chamada de _mutation_. 
+Elas seguem a mesma estrutura de uma _query_, porém iniciam com a palavra chame `mutation`. É assim que ela se parece:
+
+```gql noLineNumbers
+mutation {
+  criarPessoa(nome: "João", age: 25) {
+    nome
+    idade
+  }
+}
+```
+
+A mutation tras a mesma estrutura de uma query como o campo raiz, argumentos e _payload_.
+Esta mutation esta criando uma nova pessoa chamada João de 25 anos, e em seguida solicita o nome e a idade dessa pessoa que acabou de ser criada.
+
+```gql noLineNumbers
+"criarPessoa": {
+  "nome": "João",
+  "idade": 25,
+}
+```
