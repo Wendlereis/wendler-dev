@@ -14,11 +14,11 @@ Hoje vamos descobrir alguns conceitos principais do GraphQL como sua definição
 
 ## Schema Definition Language
 
-Como comentamos no [post anterior](/graph-ql-series-porque-graph-ql), o GraphQL utiliza seu proprio sistema de tipo chamado _Schema Definition Language_ (SDL)
+Como comentamos no [post anterior](/graph-ql-series-porque-graph-ql), o GraphQL utiliza seu próprio sistema de tipo chamado _Schema Definition Language_ (SDL)
 
 É assim que ele se parece:
 
-```gql noLineNumbers
+```graphql noLineNumbers
 type Pessoa {
   nome: String!
   idade: Int!
@@ -26,16 +26,16 @@ type Pessoa {
 ```
 
 No _schema_ acima, estamos especificando um tipo chamado `Pessoa`. 
-Esse novo tipo tem duas propriedades, `nome` e `idade`, seus tipos são `String` e `Int` respectivamente, como em liguagens de programação convencionais.
+Esse novo tipo tem duas propriedades, `nome` e `idade`, seus tipos são `String` e `Int` respectivamente, como em linguagens de programação convencionais.
 O nosso tipo `Pessoa` tem um caractere especial `!`, isso indica que a propriedade é obrigatória para aquela determinada tipagem.
 
 ### Relações
 
-Utilizando a SDL, também é possivel descrever relações entre tipos. 
-Por exempo, podemos criar um novo tipo chamado `Publicação` e atribuir ao nosso tipo `Pessoa`
+Utilizando a SDL, também é possível descrever relações entre tipos. 
+Por exemplo, podemos criar um novo tipo chamado `Publicação` e atribuir ao nosso tipo `Pessoa`
 
-```gql noLineNumbers
-type Post {
+```graphql noLineNumbers
+type Publicacao {
   titulo: String!
   autor: Pessoa!
 }
@@ -43,20 +43,20 @@ type Post {
 type Pessoa {
   nome: String!
   idade: Int!
-  publicacoes: [Post!]!
+  publicacoes: [Publicacao!]!
 }
 ```
 
-Dessa forma criamos um relação de um para muitos, onde temos uma pessoa com muitas publicações. Note também um novo tipo primitivo, o array.
+Dessa forma criamos uma relação de _um para muitos_, onde temos uma pessoa com muitas publicações. Note também um novo tipo primitivo, o array.
 
 ## Buscando dados com Queries
 
-Diferente do padrão REST, que usamos várias rotas com uma estrutura de dados fixos, no GraphQL precisamos apenas de uma unica rota.
-Isso é possivel pois os dados nao sao fixos, mas sim flexiveis de acordo com oque o cliente solicita.
+Diferente do padrão REST, que usamos várias rotas com uma estrutura de dados fixos, no GraphQL precisamos apenas de uma única rota.
+Isso é possível pois os dados não são fixos, mas sim flexíveis de acordo com oque o cliente solicita.
 
 Isso significa que o cliente explica exatamente oque ele quer, isso se chama _query_. E é assim que ela se parece:
 
-```gql noLineNumbers
+```graphql noLineNumbers
 {
   listarPessoas {
     nome
@@ -64,10 +64,10 @@ Isso significa que o cliente explica exatamente oque ele quer, isso se chama _qu
 }
 ```
 
-O campor `listarPessoas` é chamado de campo raiz da nossa query, e tudo o que vem em seguida é o nosso _payload_. 
+O campo `listarPessoas` é chamado de campo raiz da nossa query, e tudo o que vem em seguida é o nosso corpo da resposta. 
 Neste caso estamos pedindo o nome de todas as pessoas da nossa base de dados. E este é o resultado.
 
-```gql noLineNumbers
+```graphql noLineNumbers
 {
   "listarPessoas": [
     { "nome": "Johnny" },
@@ -77,15 +77,15 @@ Neste caso estamos pedindo o nome de todas as pessoas da nossa base de dados. E 
 }
 ```
 
-O resultado está no formato _JSON_ exatamente da forma que especificamos em nossa _query_. 
+O resultado está no formato _JSON_ seguindo a forma que especificamos em nossa _query_. 
 Um array de nome das pessoas cadastradas em nossa base de dados.
 
 ### Lidando com argumentos
 
 Assim como no padrão REST, também conseguimos lidar com argumentos em nossas queries. 
-Podemos adicionar o arumento `idadeMinima` ao nosso tipo `Pessoa`, para retornar pessoas que tenham idade igual ou maior que nosso argumento, por exemplo:
+Podemos adicionar o argumento `idadeMinima` ao nosso tipo `Pessoa`, para retornar pessoas que tenham idade igual ou maior que nosso argumento, por exemplo:
 
-```gql noLineNumbers
+```graphql noLineNumbers
 // requisição
 
 {
@@ -105,12 +105,12 @@ Podemos adicionar o arumento `idadeMinima` ao nosso tipo `Pessoa`, para retornar
 
 ### Criando novos dados com Mutations
 
-Agora que sabemos como buscar informações do nosso servidor usando GraphQL, vamos descobrir como adicionar uma nova informação.
+Agora que sabemos como buscar informações do nosso servidor usando GraphQL, vamos descobrir como criar uma nova informação.
 
 Operações de criação, atualização e deleção de dados é chamada de _mutation_. 
-Elas seguem a mesma estrutura de uma _query_, porém iniciam com a palavra chame `mutation`. É assim que ela se parece:
+Elas seguem a mesma estrutura de uma _query_, porém iniciam com a palavra `mutation`. É assim que ela se parece:
 
-```gql noLineNumbers
+```graphql noLineNumbers
 mutation {
   criarPessoa(nome: "João", age: 25) {
     nome
@@ -119,12 +119,114 @@ mutation {
 }
 ```
 
-A mutation tras a mesma estrutura de uma query como o campo raiz, argumentos e _payload_.
-Esta mutation esta criando uma nova pessoa chamada João de 25 anos, e em seguida solicita o nome e a idade dessa pessoa que acabou de ser criada.
+A _mutation_ segue a mesma estrutura de uma _query_, como o campo raiz, argumentos e o corpo de resposta.
+Esta _mutation_ está criando uma nova pessoa chamada João com 25 anos, e em seguida solicita o nome e a idade dessa pessoa que acabou de ser criada.
 
-```gql noLineNumbers
+```graphql noLineNumbers
 "criarPessoa": {
   "nome": "João",
   "idade": 25,
 }
 ```
+
+## Atualizações em tempo real com Subscriptions
+
+Um requisito comum em aplicações modernas é a habilidade de atualizar dados em tempo real, para isso, o GraphQL oferece o conceito de _subscription_
+
+Uma _subscription_ é um evento que um cliente se conecta ao servidor e se mantém ativo para receber atualizações. 
+Quando um evento acontece, o servidor envia esta nova informação para o cliente. 
+Diferente de uma _query_ e de uma _mutation_ convencional, a _subscription_ representa uma transmissão de dados que serão enviados ao cliente.
+
+A _subscription_ tem a mesma estrutura de _queries_ e _mutations_ como já vimos antes.
+
+```graphql noLineNumbers
+subscription {
+  novaPessoa {
+    nome
+    idade
+  }
+}
+```
+
+Assim que essa estrutura é enviada ao servidor, uma conexão será aberta, então quando uma _mutation_ executar a ação de criação de uma nova pessoa, o servidor automaticamente responderá com os novos dados.
+
+## Criando um Schema
+
+Vamos recapitular. Descobrimos que o GraphQL utiliza uma linguagem declarativa chamada _Schema Definition Language_ e com essa linguagem podemos criar nossas requisições para buscar dados usando _queries_, criar, atualizar e deletar usando _mutations_, e buscar dados em tempo real usando _subscriptions_.
+
+Mas como podemos saber quais campos eu posso pedir, e quais tipo de operações podemos executar?
+
+Muito bem, as nossas requisições são contratos definidos no servidor, este contrato também é um schema criado usando SDL.
+
+O schema é uma coleção de tipos do GraphQL que contêm alguns tipos primitivos que já conhecemos aqui.
+
+
+```graphql noLineNumbers
+subscription {
+  type Query { ... }
+  type Mutation { ... }
+  type Subscription { ... }
+}
+```
+
+`Query`, `Mutation` e `Subscription` são pontos de entrada para as requisições do nosso cliente. Para que possamos buscar todas a pessoas, como vimos anteriormente, o servidor terá uma _query_ da seguinte forma:
+
+```graphql noLineNumbers
+type Query {
+  listarPessoas: [Pessoa!]!
+}
+```
+
+E para o caso da _query_ com argumentos, precisamos especificar o tipo do nosso argumento para a _query_
+
+```graphql noLineNumbers
+type Query {
+  listarPessoas(idadeMinima: Int): [Pessoa!]!
+}
+```
+
+Seguindo o mesmo exemplo, para criar uma _mutation_ de criacao de novas pessoas:
+
+```graphql noLineNumbers
+type Mutation {
+  criarPessoa(nome: String!, idade: Int!): Pessoa!
+}
+```
+
+E para criar uma conexão em tempo real, criamos um contrato com _subscriptions_
+
+```graphql noLineNumbers
+type Subscription {
+  novaPessoa: Pessoa!
+}
+```
+
+### O resultado do schema
+
+```graphql noLineNumbers
+type Query {
+  listarPessoas(idadeMinima: Int): [Pessoa!]!
+}
+
+type Mutation {
+  criarPessoa(nome: String!, idade: Int!): Pessoa!
+}
+
+type Subscription {
+  novaPessoa: Pessoa!
+}
+
+type Pessoa {
+  nome: String!
+  idade: Int!
+}
+
+type Publicacao {
+  titulo: String!
+  autor: Pessoa!
+}
+```
+
+Este é o nosso schema, e ele nos serve de documentação de como utilizar nossa API, isso não é incrível?
+
+*Let's keep coding!*
