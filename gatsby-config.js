@@ -1,6 +1,6 @@
 require(`dotenv`).config({
   path: `.env`,
-})
+});
 
 module.exports = {
   siteMetadata: {
@@ -12,11 +12,11 @@ module.exports = {
     externalLinks: [
       {
         name: `Github`,
-        url: `https://github.com/Wendlereis`
+        url: `https://github.com/Wendlereis`,
       },
       {
         name: `LinkedIn`,
-        url: `https://www.linkedin.com/in/wendlereis/`
+        url: `https://www.linkedin.com/in/wendlereis/`,
       },
     ],
     siteTitleAlt: `wendler-dev`,
@@ -40,6 +40,12 @@ module.exports = {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         trackingId: process.env.GOOGLE_ANALYTICS_ID,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-disqus`,
+      options: {
+        shortname: process.env.DISQUS_SHORT_NAME,
       },
     },
     `gatsby-plugin-sitemap`,
@@ -71,4 +77,4 @@ module.exports = {
     `gatsby-plugin-netlify`,
     // `gatsby-plugin-webpack-bundle-analyser-v2`,
   ],
-}
+};
